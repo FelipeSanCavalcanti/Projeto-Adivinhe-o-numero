@@ -10,6 +10,10 @@ let score = 20;
 
 let highscore = 0;
 
+const displaymessage = function(message){
+  document.querySelector('.message').textContent = message;
+};
+
 document.querySelector('.again').addEventListener('click', function () {
   secretNumber = Math.trunc(Math.random() * 20) + 1;
 
@@ -19,7 +23,7 @@ document.querySelector('.again').addEventListener('click', function () {
 
   document.querySelector('.guess').value = '';
 
-  document.querySelector('.message').textContent = 'Começe a adivinhar...';
+  displaymessage('Começe a adivinhar...');
 
   document.querySelector('.number').textContent = '?';
 
@@ -33,30 +37,11 @@ document.querySelector('.check').addEventListener('click', function () {
 
   //When there is no number
   if (!guess) {
-    document.querySelector('.message').textContent = '⛔ Sem número';
-  } else if (guess < secretNumber) {
-    //When is too low
-    if (score > 1) {
-      document.querySelector('.message').textContent = '📉 Baixo!';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = '💥 Você perdeu o jogo!';
-    }
-
-    //When is too high
-  } else if (guess > secretNumber) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = '📈 Alto!';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = '💥 Você perdeu o jogo!';
-    }
-
+    displaymessage('⛔ Sem número');
+  } 
     //When is the correct number
-  } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = '🎉 Numero Correto!!!';
+   else if (guess === secretNumber) {
+    displaymessage('🎉 Numero Correto!!!');
 
     document.querySelector('.number').textContent = secretNumber;
 
@@ -66,6 +51,16 @@ document.querySelector('.check').addEventListener('click', function () {
     if (score > highscore) {
       highscore = score;
       document.querySelector('.highscore').textContent = highscore;
+    }
+
+    //When is not the number
+  } else if (guess !== secretNumber) {
+    if (score > 1) {
+      displaymessage(guess > secretNumber ? '📈 Alto!' : '📉 Baixo!');
+      score--;
+      document.querySelector('.score').textContent = score;
+    } else {
+      displaymessage('💥 Você perdeu o jogo!');
     }
   }
 });
